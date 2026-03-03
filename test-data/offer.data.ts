@@ -1,3 +1,4 @@
+import { runtimeConfig } from './../config/env';
 
 export const generateOfferPayload = () => {
   const random = Math.floor(Math.random() * 100000);
