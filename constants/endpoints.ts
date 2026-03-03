@@ -1,5 +1,6 @@
 export const ENDPOINTS = {
-  CREATE_OFFER: "/saveOffer",
-  LIST_OFFERS: "/offers"
+  OFFER: {
+    CREATE: "/users/offers/saveOffer",
+    LIST: "/users/offers/offers"
+  }
 };
-
