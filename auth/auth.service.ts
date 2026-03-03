@@ -25,12 +25,11 @@ export async function loginAndGetToken(
       `Login failed: ${response.status()} - ${await response.text()}`
     );
   }
-  
-  console.log("Runtime Username:", runtimeConfig.username);
-console.log("Runtime Password:", runtimeConfig.password);
 
-// console.log("PASSWORD:", process.env.PASSWORD);
+    console.log("Runtime Username:", runtimeConfig.username);
+    console.log("Runtime Password:", runtimeConfig.password);
+
   const body = await response.json();
 
-  return body.access_token; // IMPORTANT: access_token, not accessToken
+  return body.access_token; 
 }
