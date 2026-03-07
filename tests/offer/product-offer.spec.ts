@@ -23,27 +23,27 @@ test.describe("Product Level Offer API", () => {
 
 });
 
-  // test("Create offer with empty payload", async ({ request, token }) => {
+  test("Create offer with empty payload", async ({ request, token }) => {
 
-  //   const payload = productOfferScenarios.empty();
+    const payload = productOfferScenarios.empty();
 
-  //   const response = await createOffer(request, token, payload);
+    const response = await createOffer(request, token, payload);
 
-  //   expect(response.status()).toBe(400);
+    expect(response.status()).toBe(400);
 
-  // });
+  });
 
-  // test("Create offer with missing products", async ({ request, token }) => {
+  test("Create offer with missing products", async ({ request, token }) => {
 
-  //   const payload = productOfferScenarios.empty();
+    const payload = productOfferScenarios.empty();
 
-  //   const response = await createOffer(request, token, payload);
+    const response = await createOffer(request, token, payload);
 
-  //   expect(response.status()).toBe(200);
+    expect(response.status()).toBe(200);
 
-  //backend accepts with empty products array 
-  //should be 400, i have changed to 200 simce this is considered a positve case by the backend
+  // backend accepts with empty products array 
+  // should be 400, i have changed to 200 simce this is considered a positve case by the backend
 
-  // });
+  });
 });
 
