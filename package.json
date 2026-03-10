@@ -7,7 +7,8 @@
   "test": "playwright test",
   "test:offer": "playwright test tests/offer",
   "test:product": "playwright test tests/offer/product-offer.spec.ts",
-  "test:bill": "playwright test tests/offer/bill-offer.spec.ts"
+  "test:bill": "playwright test tests/offer/bill-offer.spec.ts",
+  "test:list-offers":"playwright test tests/offer/list-offers.spec.ts"
   },
   "repository": {
     "type": "git",

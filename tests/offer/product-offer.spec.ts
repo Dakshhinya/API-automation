@@ -45,5 +45,25 @@ test.describe("Product Level Offer API", () => {
   // should be 400, i have changed to 200 simce this is considered a positve case by the backend
 
   });
+
+  test("Create offer missing mandatory fields", async ({ request, token }) => {
+    const payload = productOfferScenarios.missingFields(buId);
+    const response = await createOffer(request, token, payload);
+    expect(response.status()).toBe(400); 
+  });
+
+  test("Create offer with invalid dates (end date before start date)", async ({ request, token }) => {
+    const payload = productOfferScenarios.invalidDates(buId);
+    const response = await createOffer(request, token, payload);
+    // Ideally 400 Bad Request depending on backend validation
+    expect(response.status()).toBe(400); 
+  });
+
+  test("Create offer with invalid discount value types", async ({ request, token }) => {
+    const payload = productOfferScenarios.invalidDiscountValues(buId);
+    const response = await createOffer(request, token, payload);
+    expect(response.status()).toBe(400); 
+  });
+
 });
 

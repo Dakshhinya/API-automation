@@ -13,11 +13,13 @@ export async function createOffer(
   });
 }
 
-export async function listOffers(
+export async function filterOffers(
   request: APIRequestContext,
-  token: string
+  token: string,
+  queryParams?: Record<string, any>
 ) {
-  return request.get(ENDPOINTS.OFFER.LIST, {
+  return request.get(ENDPOINTS.OFFER.FILTER, {
     headers: buildAuthHeaders(token),
+    params:queryParams,
   });
 }

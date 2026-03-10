@@ -28,4 +28,23 @@ test.describe("Bill Level Offer API", () => {
 
   });
 
+  test("Create offer missing mandatory fields", async ({ request, token }) => {
+    const payload = billOfferScenarios.missingFields(buId);
+    const response = await createOffer(request, token, payload);
+    expect(response.status()).toBe(400); 
+  });
+
+  test("Create offer with invalid dates (end date before start date)", async ({ request, token }) => {
+    const payload = billOfferScenarios.invalidDates(buId);
+    const response = await createOffer(request, token, payload);
+    // Ideally 400 Bad Request depending on backend validation
+    expect(response.status()).toBe(400); 
+  });
+
+  test("Create offer with invalid discount value types / negative numbers", async ({ request, token }) => {
+    const payload = billOfferScenarios.invalidDiscountValues(buId);
+    const response = await createOffer(request, token, payload);
+    expect(response.status()).toBe(400); 
+  });
+
 });

@@ -1,15 +1,135 @@
 import { test } from "../../fixtures/api.fixture";
 import { expect } from "@playwright/test";
-import { listOffers } from "../../services/offer-service";
+import { filterOffers } from "../../services/offer-service";
+import { runtimeConfig } from "../../config/env";
+
 
 test.describe("List Offers API", () => {
 
-  test("Should list offers successfully", async ({ request, token }) => {
-    const response = await listOffers(request, token);
-    expect(response.status()).toBe(200);
-    await expect(response).toBeOK();
-    const responseBody = await response.json();
-    expect(responseBody).toBeDefined();
-  });
+    const buId = Number(runtimeConfig.buId);
 
-});
+
+      test("Should filter/list offers successfully", async ({ request, token }) => {
+         const queryParams = {
+                buId: buId,
+                page: 0,
+                limit: 10,
+                q: "",
+                status: "ALL",
+                sortBy: "DATE",
+                order: "DESC"
+            };
+            const response = await filterOffers(request, token, queryParams);
+            const responseBody = await response.json();
+            expect(responseBody).toBeDefined();
+
+      });
+
+      test("Fetch filtered offers with an invalid Limit parameter (Negative Case)", async ({ request, token }) => {
+            const queryParams = {
+                buId: buId,
+                page: 0,
+                limit: -1, // Purposely invalid limit testing
+                q: "",
+                status: "ALL",
+                sortBy: "DATE",
+                order: "DESC"
+            };
+
+            const response = await filterOffers(request, token, queryParams);
+            expect(response.status()).toBe(400);
+
+    });
+
+    test("Fetch filtered offers missing mandatory buId parameter", async ({ request, token }) => {
+             // Exclude 'buId' deliberately
+            const queryParams = {
+                page: 0,
+                limit: 10,
+                q: "",
+                status: "ALL",
+                sortBy: "DATE",
+                order: "DESC"
+            };
+
+            const response = await filterOffers(request, token, queryParams);
+             expect(response.status()).toBe(400);
+
+    });
+
+    test("Should verify pagination limits correctly", async ({ request, token }) => {
+        const queryParams = {
+            buId: buId,
+            page: 0,
+            limit: 2, // Strict limit
+            q: "",
+            status: "ALL",
+            sortBy: "DATE",
+            order: "DESC"
+        };
+
+        const response = await filterOffers(request, token, queryParams);
+        expect(response.status()).toBe(200);
+
+        const responseBody = await response.json();
+        console.log("RESPONSE BODY:", JSON.stringify(responseBody, null, 2));
+
+        const items =responseBody.results;
+        expect(Array.isArray(items)).toBeTruthy();
+        expect(items.length).toBeLessThanOrEqual(2);
+    });
+
+      test("Should return empty list for non-existent search query", async ({ request, token }) => {
+            const queryParams = {
+                buId: buId,
+                page: 0,
+                limit: 10,
+                q: "some-random-string-that-does-not-exist-12345",
+                status: "ALL",
+                sortBy: "DATE",
+                order: "DESC"
+            };
+
+            const response = await filterOffers(request, token, queryParams);
+            expect(response.status()).toBe(200);
+
+            const responseBody = await response.json();
+            const items = responseBody.results;
+            expect(items.length).toBe(0);
+      });
+
+      test("Fetch filtered offers with an invalid status (Negative Case)", async ({ request, token }) => {
+            const queryParams = {
+                buId: buId,
+                page: 0,
+                limit: 10,
+                q: "",
+                status: "INVALID_STATUS_VALUE", // Purposely invalid
+                sortBy: "DATE",
+                order: "DESC"
+            };
+
+            const response = await filterOffers(request, token, queryParams);
+            // Usually invalid enums result in 400 Bad Request
+            expect(response.status()).toBe(400); 
+      });
+
+      test("Should prevent unauthenticated access", async ({ request }) => {
+            const queryParams = {
+                buId: buId,
+                page: 0,
+                limit: 10,
+                q: "",
+                status: "ALL",
+                sortBy: "DATE",
+                order: "DESC"
+            };
+
+            // Pass an empty or invalid token string
+            let invalidToken = "invalid-token-123";
+            const response = await filterOffers(request, invalidToken, queryParams);
+            expect(response.status()).toBe(403); // Forbidden / Unauthorized depending on backend
+      });
+
+
+})
