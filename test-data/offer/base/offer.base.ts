@@ -1,7 +1,6 @@
 import { fakerEN as faker } from "@faker-js/faker";
 
 export const generateBaseOffer = (buId: number) => ({
-  // type: "Offer",
   code: faker.string.alpha({ length: 6, casing: "upper" }),
   tenantBrandBusinessId: buId,
   name: `${faker.commerce.product()} Offer`,

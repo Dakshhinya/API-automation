@@ -29,7 +29,7 @@ test.describe("List Offers API", () => {
             const queryParams = {
                 buId: buId,
                 page: 0,
-                limit: -1, // Purposely invalid limit testing
+                limit: -1, 
                 q: "",
                 status: "ALL",
                 sortBy: "DATE",
@@ -42,7 +42,6 @@ test.describe("List Offers API", () => {
     });
 
     test("Fetch filtered offers missing mandatory buId parameter", async ({ request, token }) => {
-             // Exclude 'buId' deliberately
             const queryParams = {
                 page: 0,
                 limit: 10,
@@ -61,7 +60,7 @@ test.describe("List Offers API", () => {
         const queryParams = {
             buId: buId,
             page: 0,
-            limit: 2, // Strict limit
+            limit: 2,
             q: "",
             status: "ALL",
             sortBy: "DATE",
@@ -104,13 +103,12 @@ test.describe("List Offers API", () => {
                 page: 0,
                 limit: 10,
                 q: "",
-                status: "INVALID_STATUS_VALUE", // Purposely invalid
+                status: "INVALID_STATUS_VALUE", 
                 sortBy: "DATE",
                 order: "DESC"
             };
 
             const response = await filterOffers(request, token, queryParams);
-            // Usually invalid enums result in 400 Bad Request
             expect(response.status()).toBe(400); 
       });
 
@@ -125,10 +123,9 @@ test.describe("List Offers API", () => {
                 order: "DESC"
             };
 
-            // Pass an empty or invalid token string
             let invalidToken = "invalid-token-123";
             const response = await filterOffers(request, invalidToken, queryParams);
-            expect(response.status()).toBe(403); // Forbidden / Unauthorized depending on backend
+            expect(response.status()).toBe(403); 
       });
 
 

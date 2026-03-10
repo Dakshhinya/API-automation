@@ -13,7 +13,6 @@ export const productOfferDefinition = {
     conditions: []
   },
 
-  // REQUIRED even for product offers
   billDiscount: {
     className: "Discount",
     discountType: "fixed",

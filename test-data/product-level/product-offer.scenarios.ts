@@ -18,7 +18,6 @@ export const productOfferScenarios = {
 
   missingFields: (buId: number) => {
     const offer = generateBaseOffer(buId);
-    // Remove mandatory fields
     delete (offer as any).code;
     delete (offer as any).name;
     return {
@@ -29,9 +28,8 @@ export const productOfferScenarios = {
 
   invalidDates: (buId: number) => {
     const offer = generateBaseOffer(buId);
-    // End date before start date
-    offer.startDate = new Date(Date.now() + 86400000).toISOString(); // Tomorrow
-    offer.endDate = new Date().toISOString(); // Today
+    offer.startDate = new Date(Date.now() + 86400000).toISOString(); 
+    offer.endDate = new Date().toISOString(); 
     return {
       ...offer,
       products: [generateProduct()],
@@ -42,8 +40,6 @@ export const productOfferScenarios = {
   invalidDiscountValues: (buId: number) => {
     const offer = generateBaseOffer(buId);
     const invalidDefinition = JSON.parse(JSON.stringify(productOfferDefinition));
-    
-    // Set invalid discount types and strings instead of numbers
     invalidDefinition.bucket.buckets[0].discount.value = "-50"; 
     invalidDefinition.bucket.buckets[0].discount.maxDiscount = "INVALID_STRING";
 

@@ -2,7 +2,7 @@ import dotenv from "dotenv";
 
 dotenv.config({
   path: `.env.${process.env.ENV || "qa"}`,
-  override: true, // 🔥 THIS IS THE FIX
+  override: true,
 });
 
 export const runtimeConfig = {
@@ -13,5 +13,3 @@ export const runtimeConfig = {
   buId: process.env.BU_ID || "",
 };
 
-console.log("Loaded Username:", runtimeConfig.username);
-console.log("Loaded Password:", runtimeConfig.password);

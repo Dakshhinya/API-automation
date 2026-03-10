@@ -26,9 +26,6 @@ export async function loginAndGetToken(
     );
   }
 
-    console.log("Runtime Username:", runtimeConfig.username);
-    console.log("Runtime Password:", runtimeConfig.password);
-
   const body = await response.json();
 
   return body.access_token; 
