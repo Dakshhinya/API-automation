@@ -3,7 +3,9 @@ import { loginAndGetToken } from "../auth/auth.service";
 
 export const test = base.extend<{
   token: string;
+  
 }>({
+
   token: async ({ request }, use) => {
     const token = await loginAndGetToken(request);
     await use(token);

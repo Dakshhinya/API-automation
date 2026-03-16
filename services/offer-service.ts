@@ -13,7 +13,7 @@ export async function createOffer(
   });
 }
 
-export async function filterOffers(
+export async function listOffers(
   request: APIRequestContext,
   token: string,
   queryParams?: Record<string, any>

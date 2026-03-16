@@ -2,7 +2,8 @@ import { APIRequestContext } from "@playwright/test";
 import { runtimeConfig } from "../config/env";
 
 export async function loginAndGetToken(
-  request: APIRequestContext
+  request: APIRequestContext,
+  
 ): Promise<string> {
 
   const response = await request.post(
@@ -14,8 +15,8 @@ export async function loginAndGetToken(
         form: {
         grant_type: "password",
         client_id: "casa_dashboard",
-        username: runtimeConfig.username.trim(),
-        password: runtimeConfig.password.trim(),
+        username: runtimeConfig.username,
+        password: runtimeConfig.password,
         },
     }
   );
