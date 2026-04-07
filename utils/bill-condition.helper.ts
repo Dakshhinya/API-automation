@@ -11,45 +11,59 @@ export type PercentageCondition = {
 
 export function buildFixedPriceConditions(
   ranges: FixedCondition[],
-  startFrom: number = 0
+  startFrom: number = 1
 ) {
-  let currentFrom = startFrom
+  let currentFrom = startFrom;
 
   return ranges.map(range => {
-
     const condition = {
-      className: "BillValueCondition",
-      from: currentFrom,
-      to: range.to,
-      offerAmount: range.offerAmount
-    }
+      className: "FieldCondition",
+      fieldAccessor: "billAmount",
+      operator: {
+        name: "BETWEEN",
+        className: "Operator",
+        operatorType: "number"
+      },
+      value: `${currentFrom}~${range.to}`,
+      billDiscount: {
+        className: "Discount",
+        value: String(range.offerAmount)
+      }
+    };
 
-    currentFrom = range.to + 1
+    // ✅ FIX: avoid overlap
+    currentFrom = range.to + 1;
 
-    return condition
-  })
+    return condition;
+  });
 }
-
 
 export function buildPercentageConditions(
   ranges: PercentageCondition[],
-  startFrom: number = 0
+  startFrom: number = 1
 ) {
-
-  let currentFrom = startFrom
+  let currentFrom = startFrom;
 
   return ranges.map(range => {
-
     const condition = {
-      className: "BillValueCondition",
-      from: currentFrom,
-      to: range.to,
-      offerPercentage: range.offerPercentage,
-      upto: range.upto
-    }
+      className: "FieldCondition",
+      fieldAccessor: "billAmount",
+      operator: {
+        name: "BETWEEN",
+        className: "Operator",
+        operatorType: "number"
+      },
+      value: `${currentFrom}~${range.to}`,
+      billDiscount: {
+        className: "Discount",
+        value: String(range.offerPercentage),
+        maxDiscount: range.upto
+      }
+    };
 
-    currentFrom = range.to + 1
+    // ✅ FIX
+    currentFrom = range.to + 1;
 
-    return condition
-  })
+    return condition;
+  });
 }

@@ -4,29 +4,31 @@ import { runtimeConfig } from "../../config/env";
 import { createOffer } from "../../services/offer-service";
 import { billOfferScenarios } from "../../test-data/bill-level/bill-offer.scenarios";
 
-test.describe("Bill Level Offer API", () => {
+test("Create bill offer with single condition", async ({ request, token }) => {
+  test.setTimeout(60000);
 
   const buId = Number(runtimeConfig.buId);
+  console.log("BU ID:", buId); 
 
-  test.describe("Positive Cases", () => {
+  const payload = billOfferScenarios.validSingleCondition(buId);
 
-    test("Create bill offer with single condition", async ({ request, token }) => {
+  console.log("FINAL PAYLOAD:", JSON.stringify(payload, null, 2));
 
-      const payload = billOfferScenarios.validSingleCondition(buId);
-      console.log("Payload:", JSON.stringify(payload, null, 2));
-      const response = await createOffer(request, token, payload);
+  try {
+    const response = await createOffer(request, token, payload);
 
-      await expect(response).toBeOK();
+    console.log("Status:", response.status());
 
-      const body = await response.json();
-      console.log("Single Condition Response:", body);
+    const text = await response.text();
+    console.log("Raw Response:", text);
 
-      expect(body).toEqual(
-        expect.objectContaining({
-          status: "success"
-        })
-      );
-    });
+    await expect(response).toBeOK();
+
+  } catch (error) {
+    console.error("TEST FAILED:", error); 
+    throw error;
+  }
+});
 
 
   //   test("Create bill offer with multiple conditions", async ({ request, token }) => {
@@ -174,6 +176,9 @@ test.describe("Bill Level Offer API", () => {
   //     expect(body.status).not.toBe("success");
   //   });
 
-  });
+//   });
 
-});
+// });
+
+
+

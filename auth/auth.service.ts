@@ -6,6 +6,8 @@ export async function loginAndGetToken(
   
 ): Promise<string> {
 
+  console.log("runtimeConfig.username", runtimeConfig.username);
+  console.log("runtimeConfig.password", runtimeConfig.password);
   const response = await request.post(
     "https://auth.casaqa.ajira.tech/auth/realms/casa/protocol/openid-connect/token",
     {

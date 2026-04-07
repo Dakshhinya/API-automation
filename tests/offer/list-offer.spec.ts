@@ -1,6 +1,6 @@
 import { test } from "../../fixtures/api.fixture";
 import { expect } from "@playwright/test";
-import { listOffers } from "../../services/offer-service";
+// import { listOffers } from "../../services/offer-service";
 import { runtimeConfig } from "../../config/env";
 import { listOfferScenarios } from "../../test-data/list-offer/list-offer.scenarios";
 import { fetchOffers } from "../../utils/offer-helper";

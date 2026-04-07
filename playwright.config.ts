@@ -9,7 +9,10 @@ dotenv.config({ path: `.env.${process.env.ENV || "qa"}` });
 
 /**
  * See https://playwright.dev/docs/test-configuration.
+ * 
  */
+
+console.log("process.env.BASE_URL", process.env.BASE_URL);
 export default defineConfig({
   testDir: './tests',
   /* Run tests in files in parallel */
