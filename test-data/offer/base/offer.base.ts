@@ -18,7 +18,7 @@ export const generateBaseOffer = (buId: number) => {
     eligibility: "BILL_VALUE",
     isCustomerSpecific: false,
 
-    amount: 0, // ✅ ADD
+    amount: 0, 
     maxLimit: -1,
 
     sortOrder: "0",

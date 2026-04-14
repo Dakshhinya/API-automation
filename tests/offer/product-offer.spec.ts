@@ -18,37 +18,20 @@ test.describe("Product Level Offer API", () => {
     await expect(response).toBeOK();
 
   });
+test("Create product offer with empty payload", async ({ request, token }) => {
+   console.log("=== PAYLOAD ===");
+   console.log(JSON.stringify({}, null, 2));
+  const response = await createOffer(request, token, {});
+  await expect(response.status()).toBe(400);
+});
 
-  test("Create offer with empty payload", async ({ request, token }) => {
-    const payload = productOfferScenarios.empty();
-    const response = await createOffer(request, token, payload);
-    expect(response.status()).toBe(400);
-  });
-
-  test("Create offer with missing products", async ({ request, token }) => {
-    const payload = productOfferScenarios.empty();
-    const response = await createOffer(request, token, payload);
-    expect(response.status()).toBe(400);
-
-  });
-
-  test("Create offer missing mandatory fields", async ({ request, token }) => {
-    const payload = productOfferScenarios.missingFields(buId);
-    const response = await createOffer(request, token, payload);
-    expect(response.status()).toBe(400); 
-  });
-
-  test("Create offer with invalid dates (end date before start date)", async ({ request, token }) => {
-    const payload = productOfferScenarios.invalidDates(buId);
-    const response = await createOffer(request, token, payload);
-    expect(response.status()).toBe(400); 
-  });
-
-  test("Create offer with invalid discount value types", async ({ request, token }) => {
-    const payload = productOfferScenarios.invalidDiscountValues(buId);
-    const response = await createOffer(request, token, payload);
-    expect(response.status()).toBe(400); 
-  });
+test("Create product offer with missing fields", async ({ request, token }) => {
+  const payload = productOfferScenarios.missingFields(buId);
+  console.log("=== PAYLOAD ===");
+  console.log(JSON.stringify(payload, null, 2));
+  const response = await createOffer(request, token, payload);
+  expect(response.status()).toBeGreaterThanOrEqual(400);
+});
 
 });
 

@@ -9,11 +9,14 @@ export async function fetchOffers(
   const response = await listOffers(request, token, queryParams);
 
   const status = response.status();
-  const body = await response.json();
 
-  return {
-    status,
-    body,
-    response
-  };
+  let body;
+
+  try {
+    body = await response.json();
+  } catch {
+    body = await response.text();
+  }
+
+  return { status, body };
 }

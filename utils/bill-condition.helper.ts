@@ -14,7 +14,6 @@ export function buildFixedPriceConditions(
   startFrom: number = 1
 ) {
   let currentFrom = startFrom;
-
   return ranges.map(range => {
     const condition = {
       className: "FieldCondition",
@@ -30,8 +29,6 @@ export function buildFixedPriceConditions(
         value: String(range.offerAmount)
       }
     };
-
-    // ✅ FIX: avoid overlap
     currentFrom = range.to + 1;
 
     return condition;
@@ -60,10 +57,7 @@ export function buildPercentageConditions(
         maxDiscount: range.upto
       }
     };
-
-    // ✅ FIX
     currentFrom = range.to + 1;
-
     return condition;
   });
 }

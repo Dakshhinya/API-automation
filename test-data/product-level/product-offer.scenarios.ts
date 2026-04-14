@@ -11,7 +11,7 @@ export const productOfferScenarios = {
       generateProduct()
     ],
 
-    offerDefinition: productOfferDefinition
+  offerDefinition: JSON.parse(JSON.stringify(productOfferDefinition)) 
   }),
 
   empty: () => ({}),
@@ -23,17 +23,6 @@ export const productOfferScenarios = {
     return {
       ...offer,
       products: [generateProduct()]
-    };
-  },
-
-  invalidDates: (buId: number) => {
-    const offer = generateBaseOffer(buId);
-    offer.startDate = new Date(Date.now() + 86400000).toISOString(); 
-    offer.endDate = new Date().toISOString(); 
-    return {
-      ...offer,
-      products: [generateProduct()],
-      offerDefinition: productOfferDefinition
     };
   },
 

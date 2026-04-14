@@ -1,15 +1,22 @@
 import dotenv from "dotenv";
+import users from "../test-data/users.json";
 
 dotenv.config({
   path: `.env.${process.env.ENV || "qa"}`,
   override: true,
 });
 
-export const runtimeConfig = {
-  baseUrl: process.env.BASE_URL || "",
-  username: process.env.USERNAME || "",
-  password: process.env.PASSWORD || "",
-  tenantId: process.env.TENANT_ID || "",
-  buId: process.env.BU_ID || "",
-};
+const userKey = process.env.TEST_USER || "fashionfolks";
+const user = (users as any)[userKey];
 
+if (!user) {
+  throw new Error(`User '${userKey}' not found`);
+}
+
+export const runtimeConfig = {
+  baseUrl: user.BASE_URL,
+  tenantId: user.TENANT_ID,
+  buId: user.BU_ID,
+  username: user.USERNAME,
+  password: user.PASSWORD,
+};

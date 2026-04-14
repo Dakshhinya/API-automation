@@ -1,0 +1,9 @@
+{
+  "fashionfolks": {
+    "BASE_URL": "https://api.casaqa.ajira.tech",
+    "TENANT_ID": "256",
+    "BU_ID": "215",
+    "USERNAME": "fashionfolks@gmail.com",
+    "PASSWORD": "abcd1234"
+  }
+}

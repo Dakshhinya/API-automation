@@ -8,177 +8,62 @@ test("Create bill offer with single condition", async ({ request, token }) => {
   test.setTimeout(60000);
 
   const buId = Number(runtimeConfig.buId);
-  console.log("BU ID:", buId); 
-
   const payload = billOfferScenarios.validSingleCondition(buId);
 
-  console.log("FINAL PAYLOAD:", JSON.stringify(payload, null, 2));
+  console.log("=== TEST CONTEXT 1 ===");
+  console.log("Tenant ID:", runtimeConfig.tenantId);
+  console.log("BU ID:", runtimeConfig.buId);
+  console.log("User:", runtimeConfig.username);
 
-  try {
-    const response = await createOffer(request, token, payload);
+  console.log("=== TOKEN ===");
+  console.log(token ? `${token.substring(0, 20)}...` : "No Token"); // masked
 
-    console.log("Status:", response.status());
+  console.log("=== PAYLOAD ===");
+  console.dir(payload, { depth: null });
 
-    const text = await response.text();
-    console.log("Raw Response:", text);
+  const response = await createOffer(request, token, payload);
 
-    await expect(response).toBeOK();
+  console.log("Status:", response.status());
+  await expect(response).toBeOK();
+});
 
-  } catch (error) {
-    console.error("TEST FAILED:", error); 
-    throw error;
-  }
+test("Create bill offer with multiple conditions", async ({ request, token }) => {
+  const buId = Number(runtimeConfig.buId);
+  const payload = billOfferScenarios.validMultipleConditions(buId);
+    console.log("=== PAYLOAD ===");
+  console.dir(payload, { depth: null });
+  const response = await createOffer(request, token, payload);
+  await expect(response).toBeOK();
+  const body = await response.json();
+  expect(body).toMatchObject({
+    status: "success"
+  });
+});
+
+ test("Create offer with empty payload", async ({ request, token }) => {
+  const payload = {};
+    console.log("=== PAYLOAD ===");
+  console.dir(payload, { depth: null });
+  const response = await createOffer(request, token, payload);
+  await expect(response.status()).toBe(400);
+});
+
+test("Create offer with invalid range", async ({ request, token }) => {
+  const payload = billOfferScenarios.invalidRange(Number(runtimeConfig.buId));
+    console.log("=== PAYLOAD ===");
+  console.dir(payload, { depth: null });
+  const response = await createOffer(request, token, payload);
+  await expect(response.status()).not.toBe(200);
 });
 
 
-  //   test("Create bill offer with multiple conditions", async ({ request, token }) => {
-
-  //     const payload = billOfferScenarios.validMultipleConditions(buId);
-
-  //     const response = await createOffer(request, token, payload);
-
-  //     await expect(response).toBeOK();
-
-  //     const body = await response.json();
-  //     console.log("Multiple Condition Response:", body);
-
-  //     expect(body).toEqual(
-  //       expect.objectContaining({
-  //         status: "success"
-  //       })
-  //     );
-  //   });
-
-  // });
-
-
-  // test.describe("Negative Cases", () => {
-
-  //   test("Create offer with empty payload", async ({ request, token }) => {
-
-  //     const payload = billOfferScenarios.emptyPayload();
-
-  //     const response = await createOffer(request, token, payload);
-
-  //     const body = await response.json();
-  //     console.log("Empty Payload Response:", body);
-
-  //     expect(body.status).not.toBe("success");
-  //   });
-
-
-  //   test("Create offer with invalid range", async ({ request, token }) => {
-
-  //     const payload = billOfferScenarios.invalidRange(buId);
-
-  //     const response = await createOffer(request, token, payload);
-
-  //     const body = await response.json();
-  //     console.log("Invalid Range Response:", body);
-
-  //     expect(body.status).not.toBe("success");
-  //   });
-
-
-  //   test("Create offer with overlapping ranges", async ({ request, token }) => {
-
-  //     const payload = billOfferScenarios.overlappingRange(buId);
-
-  //     const response = await createOffer(request, token, payload);
-
-  //     const body = await response.json();
-  //     console.log("Overlapping Range Response:", body);
-
-  //     expect(body.status).not.toBe("success");
-  //   });
-
-
-  //   test("Create offer with missing offerAmount", async ({ request, token }) => {
-
-  //     const payload = billOfferScenarios.missingOfferAmount(buId);
-
-  //     const response = await createOffer(request, token, payload);
-
-  //     const body = await response.json();
-  //     console.log("Missing Offer Amount Response:", body);
-
-  //     expect(body.status).not.toBe("success");
-  //   });
-
-
-  //   test("Create offer with negative offerAmount", async ({ request, token }) => {
-
-  //     const payload = billOfferScenarios.negativeOfferAmount(buId);
-
-  //     const response = await createOffer(request, token, payload);
-
-  //     const body = await response.json();
-  //     console.log("Negative Offer Amount Response:", body);
-
-  //     expect(body.status).not.toBe("success");
-  //   });
-
-  // });
-
-
-  // test.describe("Percentage Offer Cases", () => {
-
-  //   test("Create percentage offer", async ({ request, token }) => {
-
-  //     const payload = billOfferScenarios.validPercentage(buId);
-
-  //     const response = await createOffer(request, token, payload);
-
-  //     await expect(response).toBeOK();
-
-  //     const body = await response.json();
-  //     console.log("Valid Percentage Response:", body);
-
-  //     expect(body.status).toBe("success");
-  //   });
-
-
-  //   test("Percentage greater than 100", async ({ request, token }) => {
-
-  //     const payload = billOfferScenarios.invalidPercentage(buId);
-
-  //     const response = await createOffer(request, token, payload);
-
-  //     const body = await response.json();
-  //     console.log("Invalid Percentage Response:", body);
-
-  //     expect(body.status).not.toBe("success");
-  //   });
-
-
-  //   test("Missing upto field", async ({ request, token }) => {
-
-  //     const payload = billOfferScenarios.missingUpto(buId);
-
-  //     const response = await createOffer(request, token, payload);
-
-  //     const body = await response.json();
-  //     console.log("Missing Upto Response:", body);
-
-  //     expect(body.status).not.toBe("success");
-  //   });
-
-
-  //   test("Negative percentage", async ({ request, token }) => {
-
-  //     const payload = billOfferScenarios.negativePercentage(buId);
-
-  //     const response = await createOffer(request, token, payload);
-
-  //     const body = await response.json();
-  //     console.log("Negative Percentage Response:", body);
-
-  //     expect(body.status).not.toBe("success");
-  //   });
-
-//   });
-
-// });
-
-
-
+//------------bill-level (PERCENTAGE)-------------------------------
+test("Create bill offer with percentage", async ({ request, token }) => {
+  const buId = Number(runtimeConfig.buId);
+  const payload = billOfferScenarios.validPercentage(buId);
+  console.log("=== PAYLOAD ===");
+  console.dir(payload, { depth: null });
+  const response = await createOffer(request, token, payload);
+  console.log("Status:", response.status());
+  await expect(response).toBeOK();
+});
