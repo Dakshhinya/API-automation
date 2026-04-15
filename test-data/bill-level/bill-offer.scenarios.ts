@@ -1,7 +1,6 @@
 import { billOfferDefinition } from "./bill-offer.config";
 import { generateBaseOffer } from "../offer/base/offer.base";
-import { buildFixedPriceConditions } from "../../utils/bill-condition.helper";
-import { buildPercentageConditions } from "../../utils/bill-condition.helper";
+import { buildFixedPriceConditions, buildPercentageConditions } from "../../utils/bill-condition.helper";
 
 export const billOfferScenarios = {
 
@@ -66,6 +65,32 @@ invalidRange: (buId: number) => {
   ];
   return {
     ...generateBaseOffer(buId),
+    offerDefinition: definition
+  };
+},
+duplicateCode: (buId: number, code: string) => {
+  const definition = JSON.parse(JSON.stringify(billOfferDefinition));
+
+  definition.billAggregateCondition.conditions = [
+    {
+      className: "FieldCondition",
+      fieldAccessor: "billAmount",
+      operator: {
+        name: "BETWEEN",
+        className: "Operator",
+        operatorType: "number"
+      },
+      value: "10~1000",
+      billDiscount: {
+        value: "10",
+        className: "Discount"
+      }
+    }
+  ];
+
+  return {
+    ...generateBaseOffer(buId),
+    code, // 🔥 SAME CODE
     offerDefinition: definition
   };
 },

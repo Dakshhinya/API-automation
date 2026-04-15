@@ -57,6 +57,23 @@ test("Create offer with invalid range", async ({ request, token }) => {
 });
 
 
+test("Should not allow duplicate offer code", async ({ request, token }) => {
+  const buId = Number(runtimeConfig.buId);
+  const duplicateCode = "DUPLICATE123";
+  const payload1 = billOfferScenarios.duplicateCode(buId, duplicateCode);
+  const response1 = await createOffer(request, token, payload1);
+  console.log("First Offer Status:", response1.status());
+  await expect(response1).toBeOK();
+  const payload2 = billOfferScenarios.duplicateCode(buId, duplicateCode);
+  const response2 = await createOffer(request, token, payload2);
+  const status = response2.status();
+  const body = await response2.text();
+  console.log("Second Offer Status:", status);
+  console.log("Duplicate Response:", body);
+  expect(status).toBeGreaterThanOrEqual(400);
+});
+
+
 //------------bill-level (PERCENTAGE)-------------------------------
 test("Create bill offer with percentage", async ({ request, token }) => {
   const buId = Number(runtimeConfig.buId);
